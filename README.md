@@ -1,11 +1,11 @@
-# Full-Stack OpenAI Chat Application with NestJS, React, Turbo Repo, and PostgreSQL
+# Full-Stack Application with NestJS, React, PostgreSQL, and Turbo
 
-This repository contains a full-stack chat application powered by OpenAI's API. It is built using:
+This repository contains a full-stack application, including:
 
-- **NestJS** for the backend (Node.js framework)
-- **React** for the frontend
-- **PostgreSQL** as the database
-- **Turbo Repo** for monorepo management
+- **NestJS (Backend)**: A server handling API requests and using OpenAI.
+- **React (Frontend)**: A client-side application interfacing with the backend.
+- **PostgreSQL**: A relational database used for data persistence.
+- **Turbo Repo**: A monorepo manager to orchestrate builds and tasks across the project.
 
 ## Table of Contents
 
@@ -18,91 +18,32 @@ This repository contains a full-stack chat application powered by OpenAI's API. 
 
 ## Prerequisites
 
-Before starting, ensure you have the following installed on your machine:
+Make sure you have the following tools installed:
 
-- [Docker](https://www.docker.com/get-started) - to run the containers
-- [Node.js](https://nodejs.org/) - for local development (optional)
-- [Yarn](https://yarnpkg.com/) - for package management
+- [Docker](https://www.docker.com/get-started) - Required to build and run containers.
+- [Node.js](https://nodejs.org/) - For local development (optional).
+- [Yarn](https://yarnpkg.com/) - For package management.
 
 ## Environment Setup
 
-You need to configure environment variables in a `.env` file located in the root of the project.
+You need to set up environment variables for your application in a `.env` file located in the respective directories (`apps/server/.env` for the backend and `apps/client/.env` for the frontend). Additionally, create a root `.env` file for PostgreSQL credentials.
 
-### Example `.env` File
+### Root `.env` Example (for PostgreSQL and General Settings)
+
+Create a `.env` file in the root directory:
 
 ```bash
-# PostgreSQL Configuration
+# PostgreSQL Environment Variables
 POSTGRES_USER=user
 POSTGRES_PASSWORD=password
 POSTGRES_DB=openai-chat
-POSTGRES_PORT=5433
 
-# Backend (NestJS) Configuration
-BACKEND_PORT=3000
+# Backend (NestJS) Environment Variables
 DATABASE_URL=postgres://user:password@postgres:5432/openai-chat
+OPENAI_API_KEY=your_openai_api_key
+OPENAI_VERSION=v1
+APP_PORT=3000
 
-# Frontend (React) Configuration
-FRONTEND_PORT=3001
+# Frontend (React) Environment Variables
 REACT_APP_API_URL=http://localhost:3000
-POSTGRES_USER: PostgreSQL username.
-POSTGRES_PASSWORD: PostgreSQL password.
-POSTGRES_DB: PostgreSQL database name.
-DATABASE_URL: The connection URL for the backend to access the database.
-REACT_APP_API_URL: The URL that React will use to communicate with the backend.
-Docker Setup
-1. Clone the Repository
-bash
-Copy code
-git clone <repository-url>
-cd <repository-directory>
-2. Docker Compose
-This project includes a docker-compose.yml file for orchestrating all services (PostgreSQL, NestJS backend, React frontend).
-
-3. Build and Run the Docker Containers
-To build and start the containers:
-
-bash
-Copy code
-docker-compose up --build
-This will:
-
-Spin up a PostgreSQL database.
-4. Stop the Containers
-To stop the running containers:
-
-bash
-Copy code
-docker-compose down
-This will gracefully shut down the containers.
-
-Project Structure
-The project is structured as a monorepo using Turbo Repo. The main directories are:
-
-plaintext
-Copy code
-.
-├── backend            # NestJS backend
-├── frontend           # React frontend
-├── docker-compose.yml # Docker services configuration
-├── .env               # Environment configuration
-├── turbo.json         # Turbo Repo configuration
-└── README.md          # Project documentation
-backend/: Contains the NestJS backend logic, including controllers, services, and Prisma ORM integration.
-frontend/: Contains the React frontend, including components and API interaction with the backend.
-Common Commands
-Backend (NestJS)
-From the backend/ directory, run:
-
-Start development server: yarn start:dev
-Build: yarn build
-Frontend (React)
-From the frontend/ directory, run:
-
-Start development server: yarn start
-Build for production: yarn build
-Turbo Repo
-Turbo Repo allows you to build and run tasks across the monorepo.
-
-Run all builds: npx turbo run build
-Run frontend/backend builds: npx turbo run build --filter=frontend --filter=backend
 ```
