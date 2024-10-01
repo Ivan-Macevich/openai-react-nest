@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14
+    restart: always
+    container_name: my_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'
+
+  backend:
+    build:
+      context: ./apps/server
+      dockerfile: Dockerfile
+    container_name: nest_backend
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_VERSION: ${OPENAI_VERSION}
+      APP_PORT: ${APP_PORT}
+    depends_on:
+      - postgres
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./apps/server:/app
+    env_file:
+      - ./apps/server/.env
+
+  frontend:
+    build:
+      context: ./apps/client
+      dockerfile: Dockerfile
+    container_name: react_frontend
+    environment:
+      NODE_ENV: production
+    ports:
+      - '3001:80'
+    volumes:
+      - ./apps/client:/app
+    env_file:
+      - ./apps/client/.env
+
+  turbo:
+    image: node:18-alpine
+    container_name: turbo
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: ['npx', 'turbo', 'run', 'build']
+
+volumes:
+  postgres-data:
